@@ -1,2 +1,0 @@
-Delaunay_network
-spatial_network

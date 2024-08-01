@@ -1,2 +1,0 @@
-sNN.pca
-custom_NN
