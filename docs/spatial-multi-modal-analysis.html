@@ -500,7 +500,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb133-9"><a href="spatial-multi-modal-analysis.html#cb133-9" tabindex="-1"></a>gpoly <span class="sc">|&gt;</span> <span class="fu">t</span>() <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">main =</span> <span class="st">&quot;t()&quot;</span>)</span>
 <span id="cb133-10"><a href="spatial-multi-modal-analysis.html#cb133-10" tabindex="-1"></a>gpoly <span class="sc">|&gt;</span> <span class="fu">shear</span>(<span class="at">fx =</span> <span class="fl">0.5</span>) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">main =</span> <span class="st">&quot;shear()&quot;</span>)</span>
 <span id="cb133-11"><a href="spatial-multi-modal-analysis.html#cb133-11" tabindex="-1"></a><span class="fu">par</span>(p)</span></code></pre></div>
-<p><img src="img/03_session2/transforms.png" width="544" /></p>
+<p><img src="img/03_session2/transforms.png" /><!-- --></p>
 <p>Giotto also provides a utility <code>affine2d</code> class that can be created from any affine matrix.
 The <code>affine2d</code> can then be used to accumulate simple transforms that can be applied to spatial objects in a single step using <code>affine()</code></p>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="spatial-multi-modal-analysis.html#cb134-1" tabindex="-1"></a><span class="co"># create affine2d</span></span>
@@ -520,7 +520,7 @@ shear     : 0.5, 0  (x, y)
 scale     : 10, 10  (x, y)
 translate : 3.43401245619535e-13, 1000  (x, y)</code></pre>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="spatial-multi-modal-analysis.html#cb136-1" tabindex="-1"></a>gpoly <span class="sc">|&gt;</span> <span class="fu">affine</span>(aff) <span class="sc">|&gt;</span> <span class="fu">plot</span>(<span class="at">main =</span> <span class="st">&quot;affine()&quot;</span>)</span></code></pre></div>
-<p><img src="img/03_session2/affine.png" width="350" /></p>
+<p><img src="img/03_session2/affine.png" /><!-- --></p>
 </div>
 </div>
 <div id="image-transforms" class="section level2 hasAnchor" number="14.3">
@@ -533,7 +533,7 @@ translate : 3.43401245619535e-13, 1000  (x, y)</code></pre>
 <span id="cb137-4"><a href="spatial-multi-modal-analysis.html#cb137-4" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="at">add =</span> <span class="cn">TRUE</span>, </span>
 <span id="cb137-5"><a href="spatial-multi-modal-analysis.html#cb137-5" tabindex="-1"></a>         <span class="at">border =</span> <span class="st">&quot;cyan&quot;</span>,</span>
 <span id="cb137-6"><a href="spatial-multi-modal-analysis.html#cb137-6" tabindex="-1"></a>         <span class="at">lwd =</span> <span class="fl">0.3</span>)</span></code></pre></div>
-<p><img src="img/03_session2/polys_and_image.png" width="350" /></p>
+<p><img src="img/03_session2/polys_and_image.png" /><!-- --></p>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="spatial-multi-modal-analysis.html#cb138-1" tabindex="-1"></a><span class="co"># affine of the giotto object</span></span>
 <span id="cb138-2"><a href="spatial-multi-modal-analysis.html#cb138-2" tabindex="-1"></a>g <span class="sc">|&gt;</span> <span class="fu">affine</span>(aff) <span class="sc">|&gt;</span> </span>
 <span id="cb138-3"><a href="spatial-multi-modal-analysis.html#cb138-3" tabindex="-1"></a>    <span class="fu">spatInSituPlotPoints</span>(</span>
@@ -545,7 +545,7 @@ translate : 3.43401245619535e-13, 1000  (x, y)</code></pre>
 <span id="cb138-9"><a href="spatial-multi-modal-analysis.html#cb138-9" tabindex="-1"></a>        <span class="at">point_size =</span> <span class="fl">0.1</span>,</span>
 <span id="cb138-10"><a href="spatial-multi-modal-analysis.html#cb138-10" tabindex="-1"></a>        <span class="at">use_overlap =</span> <span class="cn">FALSE</span></span>
 <span id="cb138-11"><a href="spatial-multi-modal-analysis.html#cb138-11" tabindex="-1"></a>    )</span></code></pre></div>
-<p><img src="img/03_session2/gobj_affine.png" width="350" /></p>
+<p><img src="img/03_session2/gobj_affine.png" /><!-- --></p>
 <p>Currently <em>giotto</em> image objects are not fully compatible with .ome.tif files. <em>terra</em> which relies on <em>gdal</em> drivers for image loading will find that the Gtiff driver opens some .ome.tif images, but fails when certain compressions (notably JP2000 as used by 10x for their single-channel stains) are used.</p>
 </div>
 <div id="co-registration-of-datasets" class="section level2 hasAnchor" number="14.4">
