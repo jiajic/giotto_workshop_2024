@@ -1,0 +1,92 @@
+# Xenium
+
+Jiaji George Chen
+
+August 6th 2024
+
+## Introduction to spatial dataset
+
+```{r, echo=FALSE, out.width="80%", fig.align='center'}
+knitr::include_graphics("img/02_session3/Xenium-General-Workflow-1024x709.png")
+```
+
+This is the 10X Xenium FFPE Human Lung Cancer dataset. Xenium captures
+individual transcript detections with a spatial resolution of 100s of
+nanometers, providing an extremely highly resolved subcellular spatial
+dataset. This particular dataset also showcases their newly released
+multimodal cell segmentation outputs.
+
+The Xenium Human Multi-Tissue and Cancer Panel (377) genes was used. The
+exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.
+
+The full data for this example can be found here:
+[here](https://www.10xgenomics.com/datasets/preview-data-ffpe-human-lung-cancer-with-xenium-multimodal-cell-segmentation-1-standard)
+
+-   *Input Files* are additional files that are not part of the output
+    bundles, usually some raw files the pipeline uses or extra info.
+-   *Output Files* are the directories that are exported by the Xenium
+    pipeline that can be expected from every run.
+
+## Additional package requirements
+When working with this data, some additional packages must be downloaded.
+-   arrow is needed
+-   requires ZTSD codec to open these parquets.
+
+
+## Introduce mini object
+
+
+```{r, eval=FALSE}
+save_dir <- "~/Documents/GitHub/giotto_workshop_2024/img/02_session3"
+```
+
+## Read in raw data
+
+        # 3D stack - DAPI
+        
+                # 2D fusion images
+        # - DAPI
+        # - stainings for multimodal segmentation
+
+        # Maximum intensity projection (MIP) of the morphology image.
+        # (Xenium Outputs v1.0 - 1.9. only)
+- image mip 
+
+
+- Transcript coordinates
+- Polygon coordinates
+- Visualizations
+
+- affine mapping?
+
+## Overlap txs & polygons
+
+- Typical aggregated workflow
+- Feature/molecule specific analysis
+- Visualizations
+
+
+## Transcript enrichment GSEA
+
+
+text
+
+## Spatial location analysis
+
+- Spatial cell type co-localization analysis
+- Spatial niche analysis
+- Spatial niche trajectory analysis
+
+## Visualizations
+
+
+
+
+
+
+
+
+
+
+
+
