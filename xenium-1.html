@@ -580,9 +580,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="introduction-to-spatial-dataset" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> Introduction to spatial dataset<a href="xenium-1.html#introduction-to-spatial-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><img src="img/02_session3/Xenium-General-Workflow-1024x709.png" width="80%" style="display: block; margin: auto;" /></p>
-<p>This is the 10X Xenium FFPE Human Lung Cancer dataset. Xenium captures individual transcript detections with a spatial resolution of 100s of nanometers, providing an extremely highly resolved subcellular spatial dataset. This particular dataset also showcases their recent multimodal cell segmentation outputs.</p>
-<p>The Xenium Human Multi-Tissue and Cancer Panel (377) genes was used. The exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.</p>
-<p>The full data for this example can be found here: <a href="https://www.10xgenomics.com/datasets/preview-data-ffpe-human-lung-cancer-with-xenium-multimodal-cell-segmentation-1-standard">here</a></p>
+<p>This is the 10X Xenium FFPE Human Lung Cancer dataset. Xenium captures
+individual transcript detections with a spatial resolution of 100s of
+nanometers, providing an extremely highly resolved subcellular spatial
+dataset. This particular dataset also showcases their recent
+multimodal cell segmentation outputs.</p>
+<p>The Xenium Human Multi-Tissue and Cancer Panel (377) genes was used. The
+exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.</p>
+<p>The full data for this example can be found here:
+<a href="https://www.10xgenomics.com/datasets/preview-data-ffpe-human-lung-cancer-with-xenium-multimodal-cell-segmentation-1-standard">here</a></p>
 <p>The relevant items are:</p>
 <ul>
 <li>Xenium Output Bundle (full)</li>
@@ -1200,7 +1206,8 @@ Figure 10.12: Delaunay spatial network`
 </div>
 <div id="niche-calculation" class="section level3 hasAnchor" number="10.8.2">
 <h3><span class="header-section-number">10.8.2</span> Niche calculation<a href="xenium-1.html#niche-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Calculate a proportion table for a cell metadata table for all the spatial neighbors of each cell. This means that with each cell established as the center of its local niche, the enrichment of each leiden cluster label is found for that local niche. The results are stored as a new spatial enrichment entry called “leiden_niche”</p>
+<p>Calculate a proportion table for a cell metadata table for all the spatial neighbors of each cell. This means that with each cell established as the center of its local niche, the enrichment of each leiden cluster label is found for that local niche.
+The results are stored as a new spatial enrichment entry called “leiden_niche”</p>
 <div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="xenium-1.html#cb293-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">calculateSpatCellMetadataProportions</span>(g,</span>
 <span id="cb293-2"><a href="xenium-1.html#cb293-2" tabindex="-1"></a>                                          <span class="at">spat_network =</span> <span class="st">&quot;Delaunay_network&quot;</span>,</span>
 <span id="cb293-3"><a href="xenium-1.html#cb293-3" tabindex="-1"></a>                                          <span class="at">metadata_column =</span> <span class="st">&quot;leiden_clus&quot;</span>, </span>
