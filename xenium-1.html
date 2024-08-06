@@ -583,8 +583,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This is the 10X Xenium FFPE Human Lung Cancer dataset. Xenium captures
 individual transcript detections with a spatial resolution of 100s of
 nanometers, providing an extremely highly resolved subcellular spatial
-dataset. This particular dataset also showcases their recent
-multimodal cell segmentation outputs.</p>
+dataset. This particular dataset also showcases their recent multimodal
+cell segmentation outputs.</p>
 <p>The Xenium Human Multi-Tissue and Cancer Panel (377) genes was used. The
 exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.</p>
 <p>The full data for this example can be found here:
@@ -596,7 +596,9 @@ exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.</p>
 <li>Supplemental: H&amp;E Image Alignment File (CSV)</li>
 </ul>
 <p><strong>Additional package requirements</strong></p>
-<p>When working with this data and trying to open the parquet files, you will need <em>arrow</em> built with ZTSD support. See the datasets &amp; packages section for specific install instructions.</p>
+<p>When working with this data and trying to open the parquet files, you
+will need <em>arrow</em> built with ZTSD support. See the datasets &amp; packages
+section for specific install instructions.</p>
 <div id="output-directory-structure" class="section level3 hasAnchor" number="10.1.1">
 <h3><span class="header-section-number">10.1.1</span> Output directory structure<a href="xenium-1.html#output-directory-structure" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <pre><code>├── analysis.tar.gz
@@ -631,8 +633,16 @@ exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.</p>
 │   ├── morphology_focus_0003.ome.tif
 ├── Xenium_V1_humanLung_Cancer_FFPE_he_image.ome.tif
 └── Xenium_V1_humanLung_Cancer_FFPE_he_imagealignment.csv</code></pre>
-<p>The above directory structuring and naming is characteristic of Xenium v2.0 pipeline outputs. The only items that may not be exactly the same across all outputs are the morphology focus directory and the naming of the aligned image items.</p>
-<p>For the morphology focus images, you may have fewer images if the experiment did not include the multimodal cell segmentation. As for the aligned images, this is usually done after the Xenium experiment concludes and is added on using Xenium Explorer. Naming and location of the aligned image (<code>he_image.ome.tif</code>) and associated alignment info <code>he_imagealignment.csv</code> are entirely up to the user.</p>
+<p>The above directory structuring and naming is characteristic of Xenium
+v2.0 pipeline outputs. The only items that may not be exactly the same
+across all outputs are the morphology focus directory and the naming of
+the aligned image items.</p>
+<p>For the morphology focus images, you may have fewer images if the
+experiment did not include the multimodal cell segmentation. As for the
+aligned images, this is usually done after the Xenium experiment
+concludes and is added on using Xenium Explorer. Naming and location of
+the aligned image (<code>he_image.ome.tif</code>) and associated alignment info
+<code>he_imagealignment.csv</code> are entirely up to the user.</p>
 </div>
 <div id="mini-xenium-dataset" class="section level3 hasAnchor" number="10.1.2">
 <h3><span class="header-section-number">10.1.2</span> Mini Xenium Dataset<a href="xenium-1.html#mini-xenium-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -653,7 +663,8 @@ exported data is from their Xenium Onboard Analysis v2.0.0 pipeline.</p>
 <span id="cb254-15"><a href="xenium-1.html#cb254-15" tabindex="-1"></a></span>
 <span id="cb254-16"><a href="xenium-1.html#cb254-16" tabindex="-1"></a><span class="fu">untar</span>(<span class="at">tarfile =</span> <span class="fu">file.path</span>(save_dir, <span class="st">&quot;workshop_xenium.zip&quot;</span>), </span>
 <span id="cb254-17"><a href="xenium-1.html#cb254-17" tabindex="-1"></a>      <span class="at">exdir =</span> data_path)</span></code></pre></div>
-<p>In order to speed up the steps of the workshop and make it locally runnable, we provide a subset of the full dataset.</p>
+<p>In order to speed up the steps of the workshop and make it locally
+runnable, we provide a subset of the full dataset.</p>
 <pre><code>- Full: -16.039, 12342.984, -3511.515, -294.455 (xmin, xmax, ymin, ymax)
 - Mini: 6000,    7000,      -2200,     -1400    (xmin, xmax, ymin, ymax)</code></pre>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-353"></span>
@@ -668,31 +679,43 @@ Figure 10.1: Shown is the H&amp;E aligned to the Xenium dataset with micron scal
 <h2><span class="header-section-number">10.2</span> Data preparation<a href="xenium-1.html#data-preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="image-conversion-may-change" class="section level3 hasAnchor" number="10.2.1">
 <h3><span class="header-section-number">10.2.1</span> Image conversion (may change)<a href="xenium-1.html#image-conversion-may-change" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>First is actually dealing with the image formats. Xenium generates <code>ome.tif</code> images which Giotto is currently not fully compatible with. So we convert them to normal <code>tif</code> images using <code>ometif_to_tif()</code> which works through the python <em>tifffile</em> package.</p>
+<p>First is actually dealing with the image formats. Xenium generates
+<code>ome.tif</code> images which Giotto is currently not fully compatible with. So
+we convert them to normal <code>tif</code> images using <code>ometif_to_tif()</code> which
+works through the python <em>tifffile</em> package.</p>
 <p>The image files can then be loaded in downstream steps.</p>
-<p><em>These commented out steps are not needed for today since the mini dataset provides .tif images that have already been spatially aligned and converted. However, the code needed to do this is provided below.</em></p>
+<p><em>These commented out steps are not needed for today since the mini
+dataset provides .tif images that have already been spatially aligned
+and converted. However, the code needed to do this is provided below.</em></p>
 <div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="xenium-1.html#cb256-1" tabindex="-1"></a><span class="co"># image_paths &lt;- list.files(</span></span>
 <span id="cb256-2"><a href="xenium-1.html#cb256-2" tabindex="-1"></a><span class="co">#   data_path, pattern = &quot;morphology_focus|he_image.ome&quot;, </span></span>
 <span id="cb256-3"><a href="xenium-1.html#cb256-3" tabindex="-1"></a><span class="co">#   recursive = TRUE, full.names = TRUE</span></span>
 <span id="cb256-4"><a href="xenium-1.html#cb256-4" tabindex="-1"></a><span class="co"># )</span></span></code></pre></div>
-<p><code>ometif_to_tif()</code> <code>output_dir</code> can be specified, but by default, it writes to a new subdirectory called <code>tif_exports</code> underneath the source image”s directory.</p>
-<p><em>Keep in mind that where the exported tifs get exported to should be where downstream image reading functions should point to. The code run today is with the filepaths that the mini dataset has.</em></p>
+<p><code>ometif_to_tif()</code> <code>output_dir</code> can be specified, but by default, it
+writes to a new subdirectory called <code>tif_exports</code> underneath the source
+image”s directory.</p>
+<p><em>Keep in mind that where the exported tifs get exported to should be
+where downstream image reading functions should point to. The code run
+today is with the filepaths that the mini dataset has.</em></p>
 <div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="xenium-1.html#cb257-1" tabindex="-1"></a><span class="co"># lapply(image_paths, function(img) {</span></span>
 <span id="cb257-2"><a href="xenium-1.html#cb257-2" tabindex="-1"></a><span class="co">#     GiottoClass::ometif_to_tif(img, overwrite = TRUE)</span></span>
 <span id="cb257-3"><a href="xenium-1.html#cb257-3" tabindex="-1"></a><span class="co"># })</span></span></code></pre></div>
-<p>We are also working on a method of directly accessing the <code>ome.tifs</code> for better compatibility in the future.</p>
+<p>We are also working on a method of directly accessing the <code>ome.tifs</code> for
+better compatibility in the future.</p>
 </div>
 </div>
 <div id="convenience-function" class="section level2 hasAnchor" number="10.3">
 <h2><span class="header-section-number">10.3</span> Convenience function<a href="xenium-1.html#convenience-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Giotto has flexible methods for working with the Xenium outputs. The <code>createGiottoXeniumObject()</code> will generate a <code>giotto</code> object in a single step when provided the output directory.</p>
+<p>Giotto has flexible methods for working with the Xenium outputs. The
+<code>createGiottoXeniumObject()</code> will generate a <code>giotto</code> object in a single
+step when provided the output directory.</p>
 <p>The default behavior is to load:</p>
 <ul>
 <li>transcripts information</li>
 <li>cell and nucleus boundaries</li>
 <li>feature metadata (gene_panel.json)</li>
 </ul>
-<p>For the full dataset (HPC): <em>time: 1-2min | memory: 24GBC</em></p>
+<p>For the full dataset (HPC): <em>time: 1-2min | memory: 24GB</em></p>
 <div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="xenium-1.html#cb258-1" tabindex="-1"></a>?createGiottoXeniumObject</span>
 <span id="cb258-2"><a href="xenium-1.html#cb258-2" tabindex="-1"></a></span>
 <span id="cb258-3"><a href="xenium-1.html#cb258-3" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">createGiottoXeniumObject</span>(<span class="at">xenium_dir =</span> data_path)</span>
@@ -701,7 +724,8 @@ Figure 10.1: Shown is the H&amp;E aligned to the Xenium dataset with micron scal
 <span id="cb258-6"><a href="xenium-1.html#cb258-6" tabindex="-1"></a><span class="fu">instructions</span>(g, <span class="st">&quot;save_dir&quot;</span>) <span class="ot">&lt;-</span> save_dir</span>
 <span id="cb258-7"><a href="xenium-1.html#cb258-7" tabindex="-1"></a></span>
 <span id="cb258-8"><a href="xenium-1.html#cb258-8" tabindex="-1"></a><span class="fu">instructions</span>(g, <span class="st">&quot;save_plot&quot;</span>) <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span></code></pre></div>
-<p>There are a lot of other parameters for additional or alternative items you can load. The next subsections will explain a couple of them.</p>
+<p>There are a lot of other parameters for additional or alternative items
+you can load. The next subsections will explain a couple of them.</p>
 <div id="specific-filepaths" class="section level3 hasAnchor" number="10.3.1">
 <h3><span class="header-section-number">10.3.1</span> Specific filepaths<a href="xenium-1.html#specific-filepaths" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <pre><code>expression_path = ,
@@ -709,28 +733,39 @@ cell_metadata_path = ,
 transcript_path = ,
 bounds_path = ,
 gene_panel_json_path = , </code></pre>
-<p>The convenience function auto-detects filepaths based on the Xenium directory path and the preferred file formats</p>
+<p>The convenience function auto-detects filepaths based on the Xenium
+directory path and the preferred file formats</p>
 <ul>
 <li><code>.parquet</code> for tabular (vs <code>.csv</code>)</li>
 <li><code>.h5</code> for matrix over other formats when available (vs <code>.mtx</code>)</li>
 <li><code>.zarr</code> is currently not supported.</li>
 </ul>
-<p>When you need to use a different file format or something is not in the expected output structure, you can supply a specific filepath to the convenience function using these parameters.</p>
+<p>When you need to use a different file format or something is not in the
+expected output structure, you can supply a specific filepath to the
+convenience function using these parameters.</p>
 </div>
 <div id="quality-value" class="section level3 hasAnchor" number="10.3.2">
 <h3><span class="header-section-number">10.3.2</span> Quality value<a href="xenium-1.html#quality-value" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <pre><code>qv_threshold = 20 # default</code></pre>
-<p>The <em>Quality Value</em> is a Phred-based 0-40 value that 10X provides for every detection in their transcripts output. Higher values mean higher confidence in the decoded transcript identity. By default 10X uses a cutoff of QV = 20 for transcripts to use downstream.</p>
-<p>_*setting a value other than 20 will make the loaded dataset different from the 10X-provided expression matrix and cell metadata._</p>
+<p>The <em>Quality Value</em> is a Phred-based 0-40 value that 10X provides for
+every detection in their transcripts output. Higher values mean higher
+confidence in the decoded transcript identity. By default 10X uses a
+cutoff of QV = 20 for transcripts to use downstream.</p>
+<p><em>*setting a value other than 20 will make the loaded dataset different
+from the 10X-provided expression matrix and cell metadata.</em></p>
 <details>
 <summary>
 QV Calculation
 </summary>
 <ol style="list-style-type: decimal">
-<li>Raw Q-score based on how likely it is that an observed code is to be the codeword that it gets mapped to vs less likely codeword.</li>
-<li>Adjustment of raw Q-score by binning the transcripts by Q-value then adjusting the exact Q per bin based on proportion of <strong>Negative Control Codewords</strong> detected within.</li>
+<li>Raw Q-score based on how likely it is that an observed code is to be
+the codeword that it gets mapped to vs less likely codeword.</li>
+<li>Adjustment of raw Q-score by binning the transcripts by Q-value then
+adjusting the exact Q per bin based on proportion of <strong>Negative
+Control Codewords</strong> detected within.</li>
 </ol>
-<p><a href="https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/algorithms-overview/xoa-algorithms#qvs">further info</a></p>
+<p><a href="https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/algorithms-overview/xoa-algorithms#qvs">further
+info</a></p>
 </details>
 </div>
 <div id="transcript-type-splitting" class="section level3 hasAnchor" number="10.3.3">
@@ -746,25 +781,40 @@ c(&quot;NegControlProbe&quot;),
 c(&quot;UnassignedCodeword&quot;),
 c(&quot;NegControlCodeword)&quot;
 )</code></pre>
-<p>There are 4 types of transcript detections that 10X reports with their v2.0 pipeline:</p>
+<p>There are 4 types of transcript detections that 10X reports with their
+v2.0 pipeline:</p>
 <ul>
 <li><strong>Gene expression</strong> - This is the rna gene detections.</li>
-<li><strong>Negative Control Codeword</strong> - (QC) Codewords that do not map to genes, but are in the codebook. Used to determine specificity of decoding algorithm.</li>
-<li><strong>Negative Control Probe</strong> - (QC) Probes in panel but target non-biological sequences. Used to determine specificity of assay.</li>
-<li><strong>Unassigned Codeword</strong> - (QC) Codewords that should not be used in the current panel.</li>
+<li><strong>Negative Control Codeword</strong> - (QC) Codewords that do not map to
+genes, but are in the codebook. Used to determine specificity of
+decoding algorithm.</li>
+<li><strong>Negative Control Probe</strong> - (QC) Probes in panel but target
+non-biological sequences. Used to determine specificity of assay.</li>
+<li><strong>Unassigned Codeword</strong> - (QC) Codewords that should not be used in
+the current panel.</li>
 </ul>
 <p>With V3 on their Xenium prime outputs, there is additionally:</p>
 <ul>
-<li><strong>Genomic Control Codeword</strong> (QC) Probes for intergenic genomic DNA instead of transcripts.</li>
+<li><strong>Genomic Control Codeword</strong> (QC) Probes for intergenic genomic DNA
+instead of transcripts.</li>
 </ul>
 <hr>
-<p>The main thing to watch out for is that the other probe types should be separated out from the the <strong>Gene expression</strong> or <strong>rna</strong> feature type.</p>
-<p>How to deal with these different types of detections is easily adjustable. With the <code>feat_type</code> param you declare which categories/<code>feat_types</code> you want to split transcript detections into. Then with <code>split_keyword</code>, you provide a list of character vectors containing <code>grep()</code> terms to search for.</p>
-<p>Note that there are 4 <code>feat_types</code> declared in this set of defaults, but 3 items passed to <code>split_keyword</code>. Any transcripts not matched by items in <code>split_keyword</code>, get categorized as the first provided <code>feat_type</code> (“rna”).</p>
+<p>The main thing to watch out for is that the other probe types should be
+separated out from the the <strong>Gene expression</strong> or <strong>rna</strong> feature type.</p>
+<p>How to deal with these different types of detections is easily
+adjustable. With the <code>feat_type</code> param you declare which
+categories/<code>feat_types</code> you want to split transcript detections into.
+Then with <code>split_keyword</code>, you provide a list of character vectors
+containing <code>grep()</code> terms to search for.</p>
+<p>Note that there are 4 <code>feat_types</code> declared in this set of defaults, but
+3 items passed to <code>split_keyword</code>. Any transcripts not matched by items
+in <code>split_keyword</code>, get categorized as the first provided <code>feat_type</code>
+(“rna”).</p>
 </div>
 <div id="centroids-calculation" class="section level3 hasAnchor" number="10.3.4">
 <h3><span class="header-section-number">10.3.4</span> Centroids calculation<a href="xenium-1.html#centroids-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Several Giotto operations require that a set of centroids are calculated for polygon spatial units.</p>
+<p>Several Giotto operations require that a set of centroids are calculated
+for polygon spatial units.</p>
 <div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="xenium-1.html#cb262-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">addSpatialCentroidLocations</span>(g, </span>
 <span id="cb262-2"><a href="xenium-1.html#cb262-2" tabindex="-1"></a>                                 <span class="at">poly_info =</span> <span class="st">&quot;cell&quot;</span>)</span>
 <span id="cb262-3"><a href="xenium-1.html#cb262-3" tabindex="-1"></a></span>
@@ -790,7 +840,9 @@ Figure 10.2: Simple subcellular plotting to check data
 </div>
 <div id="piecewise-loading" class="section level2 hasAnchor" number="10.4">
 <h2><span class="header-section-number">10.4</span> Piecewise loading<a href="xenium-1.html#piecewise-loading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Giotto also provides the <code>importXenium()</code> import utility that allows independent creation of compatible Giotto subobjects for more flexibility.</p>
+<p>Giotto also provides the <code>importXenium()</code> import utility that allows
+independent creation of compatible Giotto subobjects for more
+flexibility.</p>
 <div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="xenium-1.html#cb264-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">importXenium</span>(data_path)</span>
 <span id="cb264-2"><a href="xenium-1.html#cb264-2" tabindex="-1"></a></span>
 <span id="cb264-3"><a href="xenium-1.html#cb264-3" tabindex="-1"></a><span class="fu">force</span>(x)</span></code></pre></div>
@@ -846,11 +898,18 @@ nucleus_distance codeword_index feat_ID_uniq
 </div>
 <div id="optional-loading-pre-aggregated-data" class="section level3 hasAnchor" number="10.4.2">
 <h3><span class="header-section-number">10.4.2</span> (optional) Loading pre-aggregated data<a href="xenium-1.html#optional-loading-pre-aggregated-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Giotto can spatially aggregate the transcripts information based on a provided set of boundaries information, however 10X also provides a pre-aggregated set of cell by feature information and metadata. These values may be slightly different from those calculated by Giotto”s pipeline, and are not loaded by default.</p>
+<p>Giotto can spatially aggregate the transcripts information based on a
+provided set of boundaries information, however 10X also provides a
+pre-aggregated set of cell by feature information and metadata. These
+values may be slightly different from those calculated by Giotto”s
+pipeline, and are not loaded by default.</p>
 <p>Some care needs to be taken when loading this information:</p>
 <ul>
-<li>The <code>feat_type</code> of the loaded expression information should be matched to the used <code>feat_type</code> parameters passed to the convenience function.</li>
-<li>The <code>qv_threshold</code> used must be 20 since the 10X outputs are based on that cutoff.</li>
+<li>The <code>feat_type</code> of the loaded expression information should be
+matched to the used <code>feat_type</code> parameters passed to the convenience
+function.</li>
+<li>The <code>qv_threshold</code> used must be 20 since the 10X outputs are based
+on that cutoff.</li>
 </ul>
 <div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="xenium-1.html#cb269-1" tabindex="-1"></a>x<span class="sc">$</span>filetype<span class="sc">$</span>expression <span class="ot">&lt;-</span> <span class="st">&quot;mtx&quot;</span> <span class="co"># change to mtx instead of .h5 which is not in the mini dataset</span></span>
 <span id="cb269-2"><a href="xenium-1.html#cb269-2" tabindex="-1"></a></span>
@@ -859,7 +918,8 @@ nucleus_distance codeword_index feat_ID_uniq
 <span id="cb269-5"><a href="xenium-1.html#cb269-5" tabindex="-1"></a><span class="fu">featType</span>(ex)</span></code></pre></div>
 <pre><code>[1] &quot;rna&quot;                       &quot;Negative Control Probe&quot;    &quot;Negative Control Codeword&quot;
 [4] &quot;Unassigned Codeword&quot;      </code></pre>
-<p>The feature types here do not match what we established for the transcripts, so we can just change them.</p>
+<p>The feature types here do not match what we established for the
+transcripts, so we can just change them.</p>
 <div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="xenium-1.html#cb271-1" tabindex="-1"></a><span class="fu">force</span>(g)</span></code></pre></div>
 <pre><code>An object of class giotto 
 &gt;Active spat_unit:  cell 
@@ -877,7 +937,8 @@ spatial locations ----------------
 <span id="cb273-4"><a href="xenium-1.html#cb273-4" tabindex="-1"></a></span>
 <span id="cb273-5"><a href="xenium-1.html#cb273-5" tabindex="-1"></a><span class="fu">featType</span>(ex[[<span class="dv">4</span>]]) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;UnassignedCodeword&quot;</span>)</span></code></pre></div>
 <p>Then we can just append them to the Giotto object.<br />
-Here we set up a second object since we will be using Giotto’s own aggregation method downstream.</p>
+Here we set up a second object since we will be using Giotto’s own
+aggregation method downstream.</p>
 <div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="xenium-1.html#cb274-1" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> g</span>
 <span id="cb274-2"><a href="xenium-1.html#cb274-2" tabindex="-1"></a></span>
 <span id="cb274-3"><a href="xenium-1.html#cb274-3" tabindex="-1"></a><span class="co"># append the expression info</span></span>
@@ -936,15 +997,28 @@ Figure 10.4: Example plot using 10X metadata. Left is cell_area, right is transc
 <h2><span class="header-section-number">10.5</span> Xenium Images<a href="xenium-1.html#xenium-images" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Xenium outputs have several image outputs. For this dataset:</p>
 <ul>
-<li><code>morphology.ome.tif</code> is a z-stacked image of the DAPI staining, with z levels separated as pages within the <code>ome.tif</code>. In this dataset, only pages 6 and 7 are really in focus.</li>
-<li><code>morphology_focus</code> is a folder containing single-channel image(s), but with the original z information collapsed into a single in-focus layer. For all datasets, image 0000 will be DAPI staining, but if you have additional stains, such as the multimodal segmentation, they will also be here. These are the recommended immunofluorescence staining images to import.</li>
-<li><code>Xenium_V1_humanLung_Cancer_FFPE_he_image.ome.tif</code> is an added on (in this case H&amp;E) image with manual affine registration.</li>
+<li><code>morphology.ome.tif</code> is a z-stacked image of the DAPI staining, with
+z levels separated as pages within the <code>ome.tif</code>. In this dataset,
+only pages 6 and 7 are really in focus.</li>
+<li><code>morphology_focus</code> is a folder containing single-channel image(s),
+but with the original z information collapsed into a single in-focus
+layer. For all datasets, image 0000 will be DAPI staining, but if
+you have additional stains, such as the multimodal segmentation,
+they will also be here. These are the recommended immunofluorescence
+staining images to import.</li>
+<li><code>Xenium_V1_humanLung_Cancer_FFPE_he_image.ome.tif</code> is an added on
+(in this case H&amp;E) image with manual affine registration.</li>
 </ul>
 <div id="image-metadata" class="section level3 hasAnchor" number="10.5.1">
 <h3><span class="header-section-number">10.5.1</span> Image metadata<a href="xenium-1.html#image-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The <code>morphology_focus</code> directory may contain multiple images, but to know more information, we have to check the <code>ome.tif</code> <code>xml</code> metadata. With a normal dataset, you can use:</p>
+<p>The <code>morphology_focus</code> directory may contain multiple images, but to
+know more information, we have to check the <code>ome.tif</code> <code>xml</code> metadata.
+With a normal dataset, you can use:</p>
 <pre><code>`GiottoClass::ometif_metadata([filepath], node = &quot;Channel&quot;)`</code></pre>
-<p>on one of the <code>morphology_focus</code> images, but since the mini dataset images are pre-processed, there is only an exported <code>.xml</code> to explore. The output of the code chunk below is the same as that from calling <code>ometif_metadata()</code> and looking for the <code>Channel</code> node.</p>
+<p>on one of the <code>morphology_focus</code> images, but since the mini dataset
+images are pre-processed, there is only an exported <code>.xml</code> to explore.
+The output of the code chunk below is the same as that from calling
+<code>ometif_metadata()</code> and looking for the <code>Channel</code> node.</p>
 <div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="xenium-1.html#cb279-1" tabindex="-1"></a>img_xml_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data_path, <span class="st">&quot;morphology_focus&quot;</span>, <span class="st">&quot;morphology_focus_0000.xml&quot;</span>)</span>
 <span id="cb279-2"><a href="xenium-1.html#cb279-2" tabindex="-1"></a></span>
 <span id="cb279-3"><a href="xenium-1.html#cb279-3" tabindex="-1"></a>omemeta <span class="ot">&lt;-</span> xml2<span class="sc">::</span><span class="fu">read_xml</span>(img_xml_path)</span>
@@ -966,7 +1040,10 @@ Figure 10.4: Example plot using 10X metadata. Left is cell_area, right is transc
 </div>
 <div id="image-loading" class="section level3 hasAnchor" number="10.5.2">
 <h3><span class="header-section-number">10.5.2</span> Image loading<a href="xenium-1.html#image-loading" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><code>morphology_focus</code> images need to be scaled by the micron scaling factor. Aligned images need to first be affine transformed then scaled. The micron scaling factor can be found in the json-like <code>experiment.xenium</code> file under <code>pixel_size</code> (0.2125 for this dataset).</p>
+<p><code>morphology_focus</code> images need to be scaled by the micron scaling
+factor. Aligned images need to first be affine transformed then scaled.
+The micron scaling factor can be found in the json-like
+<code>experiment.xenium</code> file under <code>pixel_size</code> (0.2125 for this dataset).</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-372"></span>
 <img src="img/02_session3/img_orig_ext.png" alt="Spatial extent/bounds of transcripts (red), immunofluorescence morphology focus images (blue), H&amp;E aligned image (gold). Lower right shows the affine matrix for aligning the H&amp;E" width="80%" />
 <p class="caption">
@@ -996,8 +1073,11 @@ path = &quot;[path to image.tif]&quot;,
 imagealignment_path = &quot;[path to magealignment.csv]&quot;,
 name = &quot;aligned_img&quot;
 )</code></pre>
-<p>Specifically for the aligned image, there is also <code>read10xAffineImage()</code> which has similar parameters, but also asks for the micron scaling factor.</p>
-<p>But for the mini dataset, the images are pre-processed and can be directly added.</p>
+<p>Specifically for the aligned image, there is also <code>read10xAffineImage()</code>
+which has similar parameters, but also asks for the micron scaling
+factor.</p>
+<p>But for the mini dataset, the images are pre-processed and can be
+directly added.</p>
 <div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="xenium-1.html#cb282-1" tabindex="-1"></a>img_paths <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb282-2"><a href="xenium-1.html#cb282-2" tabindex="-1"></a>  <span class="fu">sprintf</span>(<span class="st">&quot;data/02_session3/morphology_focus/morphology_focus_%04d.tif&quot;</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>),</span>
 <span id="cb282-3"><a href="xenium-1.html#cb282-3" tabindex="-1"></a>  <span class="st">&quot;data/02_session3/he_mini.tif&quot;</span></span>
@@ -1065,7 +1145,11 @@ Figure 10.6: H&amp;E and Cell polys (top left), DAPI and nuclear polys (top righ
 </div>
 <div id="spatial-aggregation" class="section level2 hasAnchor" number="10.6">
 <h2><span class="header-section-number">10.6</span> Spatial aggregation<a href="xenium-1.html#spatial-aggregation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>First calculate the <code>feat_info</code> “rna” transcripts overlapped by the <code>spatial_info</code> “cell” polygons with <code>calculateOverlap()</code>. Then, the overlaps information (relationships between points and polygons that overlap them) gets converted into a count matrix with <code>overlapToMatrix()</code>.</p>
+<p>First calculate the <code>feat_info</code> “rna” transcripts overlapped by the
+<code>spatial_info</code> “cell” polygons with <code>calculateOverlap()</code>. Then, the
+overlaps information (relationships between points and polygons that
+overlap them) gets converted into a count matrix with
+<code>overlapToMatrix()</code>.</p>
 <div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="xenium-1.html#cb283-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">calculateOverlap</span>(g,</span>
 <span id="cb283-2"><a href="xenium-1.html#cb283-2" tabindex="-1"></a>                      <span class="at">spatial_info =</span> <span class="st">&quot;cell&quot;</span>,</span>
 <span id="cb283-3"><a href="xenium-1.html#cb283-3" tabindex="-1"></a>                      <span class="at">feat_info =</span> <span class="st">&quot;rna&quot;</span></span>
@@ -1109,11 +1193,15 @@ Number of feats removed:  0  out of  377 </code></pre>
 Figure 10.7: nr_feats - Number of different gene species detected per cell (left), total_expr - total detections per cell (right)
 </p>
 </div>
-<p>When there are a lot of features, we would also select only the interesting highly variable features so that downstream dimension reduction has more meaningful separation. Here we skip HVF detection since there are only 377 genes.</p>
+<p>When there are a lot of features, we would also select only the
+interesting highly variable features so that downstream dimension
+reduction has more meaningful separation. Here we skip HVF detection
+since there are only 377 genes.</p>
 </div>
 <div id="dimension-reduction-1" class="section level3 hasAnchor" number="10.7.3">
 <h3><span class="header-section-number">10.7.3</span> Dimension Reduction<a href="xenium-1.html#dimension-reduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Dimensional reduction of expression space to visualize expressional differences between cells and help with clustering.</p>
+<p>Dimensional reduction of expression space to visualize expressional
+differences between cells and help with clustering.</p>
 <div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="xenium-1.html#cb287-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">runPCA</span>(g, </span>
 <span id="cb287-2"><a href="xenium-1.html#cb287-2" tabindex="-1"></a>            <span class="at">feats_to_use =</span> <span class="cn">NULL</span>)</span>
 <span id="cb287-3"><a href="xenium-1.html#cb287-3" tabindex="-1"></a><span class="co"># feats_to_use = NULL since there are no HVFs calculated. Use all genes.</span></span>
@@ -1182,10 +1270,12 @@ Figure 10.11: Spatial plot with leiden clustering annotations.
 </div>
 <div id="niche-clustering-1" class="section level2 hasAnchor" number="10.8">
 <h2><span class="header-section-number">10.8</span> Niche clustering<a href="xenium-1.html#niche-clustering-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Building on top of these leiden annotations, we can define spatial niche signatures based on which leiden types are often found together.</p>
+<p>Building on top of these leiden annotations, we can define spatial niche
+signatures based on which leiden types are often found together.</p>
 <div id="spatial-network" class="section level3 hasAnchor" number="10.8.1">
 <h3><span class="header-section-number">10.8.1</span> Spatial network<a href="xenium-1.html#spatial-network" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>First a spatial network must be generated so that spatial relationships between cells can be understood.</p>
+<p>First a spatial network must be generated so that spatial relationships
+between cells can be understood.</p>
 <div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="xenium-1.html#cb292-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">createSpatialNetwork</span>(g,</span>
 <span id="cb292-2"><a href="xenium-1.html#cb292-2" tabindex="-1"></a>                          <span class="at">method =</span> <span class="st">&quot;Delaunay&quot;</span></span>
 <span id="cb292-3"><a href="xenium-1.html#cb292-3" tabindex="-1"></a>)</span>
@@ -1206,8 +1296,11 @@ Figure 10.12: Delaunay spatial network`
 </div>
 <div id="niche-calculation" class="section level3 hasAnchor" number="10.8.2">
 <h3><span class="header-section-number">10.8.2</span> Niche calculation<a href="xenium-1.html#niche-calculation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Calculate a proportion table for a cell metadata table for all the spatial neighbors of each cell. This means that with each cell established as the center of its local niche, the enrichment of each leiden cluster label is found for that local niche.
-The results are stored as a new spatial enrichment entry called “leiden_niche”</p>
+<p>Calculate a proportion table for a cell metadata table for all the
+spatial neighbors of each cell. This means that with each cell
+established as the center of its local niche, the enrichment of each
+leiden cluster label is found for that local niche. The results are
+stored as a new spatial enrichment entry called “leiden_niche”</p>
 <div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="xenium-1.html#cb293-1" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">calculateSpatCellMetadataProportions</span>(g,</span>
 <span id="cb293-2"><a href="xenium-1.html#cb293-2" tabindex="-1"></a>                                          <span class="at">spat_network =</span> <span class="st">&quot;Delaunay_network&quot;</span>,</span>
 <span id="cb293-3"><a href="xenium-1.html#cb293-3" tabindex="-1"></a>                                          <span class="at">metadata_column =</span> <span class="st">&quot;leiden_clus&quot;</span>, </span>
@@ -1284,7 +1377,9 @@ Figure 10.14: Stacked barplot of leiden annotation composition by niche
 </div>
 <div id="cell-proximity-enrichment" class="section level2 hasAnchor" number="10.9">
 <h2><span class="header-section-number">10.9</span> Cell proximity enrichment<a href="xenium-1.html#cell-proximity-enrichment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Using a spatial network, determine if there is an enrichment or depletion between annotation types by calculating the observed over the expected frequency of interactions.</p>
+<p>Using a spatial network, determine if there is an enrichment or
+depletion between annotation types by calculating the observed over the
+expected frequency of interactions.</p>
 <div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="xenium-1.html#cb295-1" tabindex="-1"></a><span class="co"># uses a lot of memory</span></span>
 <span id="cb295-2"><a href="xenium-1.html#cb295-2" tabindex="-1"></a>leiden_prox <span class="ot">&lt;-</span> <span class="fu">cellProximityEnrichment</span>(g,</span>
 <span id="cb295-3"><a href="xenium-1.html#cb295-3" tabindex="-1"></a>                                       <span class="at">cluster_column =</span> <span class="st">&quot;leiden_clus&quot;</span>,</span>
@@ -1304,7 +1399,10 @@ Figure 10.14: Stacked barplot of leiden annotation composition by niche
 Figure 10.15: Cell-cell interaction enrichments and depletions (left). Number of interactions of each type found (right)
 </p>
 </div>
-<p>Most enrichments are self-self interactions, which is expected. However, 6–8 and 2–9 stand out as being hetero interactions that are enriched with a large number of interactions. We can take a closer look by plotting these annotation pairs with colors that stand out.</p>
+<p>Most enrichments are self-self interactions, which is expected. However,
+6–8 and 2–9 stand out as being hetero interactions that are enriched
+with a large number of interactions. We can take a closer look by
+plotting these annotation pairs with colors that stand out.</p>
 <div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="xenium-1.html#cb296-1" tabindex="-1"></a><span class="co"># set up colors</span></span>
 <span id="cb296-2"><a href="xenium-1.html#cb296-2" tabindex="-1"></a>other_cell_color <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="st">&quot;grey&quot;</span>, <span class="dv">12</span>)</span>
 <span id="cb296-3"><a href="xenium-1.html#cb296-3" tabindex="-1"></a>int_6_8 <span class="ot">&lt;-</span> int_2_9 <span class="ot">&lt;-</span> other_cell_color</span>
@@ -1345,9 +1443,15 @@ Figure 10.17: Spatial plot of enriched leiden annotation 2 to 9 interactions
 </div>
 <div id="pseudovisium" class="section level2 hasAnchor" number="10.10">
 <h2><span class="header-section-number">10.10</span> Pseudovisium<a href="xenium-1.html#pseudovisium" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Another thing we can do is create a “pseudovisium” dataset by tessellating across this dataset using the same layout and resolution as a Visium capture array.</p>
-<p><code>makePseudoVisium</code> generates a Visium array of circular polygons across the spatial extent provided.</p>
-<p>Here we use <code>ext()</code> with the <code>prefer</code> arg pointing to the polygon and points data and <code>all_data = TRUE</code>, meaning that the combined spatial extent of those two data types will be returned, giving a good measure of where all the data in the object is at the moment.</p>
+<p>Another thing we can do is create a “pseudovisium” dataset by
+tessellating across this dataset using the same layout and resolution as
+a Visium capture array.</p>
+<p><code>makePseudoVisium</code> generates a Visium array of circular polygons across
+the spatial extent provided.</p>
+<p>Here we use <code>ext()</code> with the <code>prefer</code> arg pointing to the polygon and
+points data and <code>all_data = TRUE</code>, meaning that the combined spatial
+extent of those two data types will be returned, giving a good measure
+of where all the data in the object is at the moment.</p>
 <p><code>micron_size = 1</code> since the Xenium data is already scaled to microns.</p>
 <div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="xenium-1.html#cb297-1" tabindex="-1"></a>pvis <span class="ot">&lt;-</span> <span class="fu">makePseudoVisium</span>(</span>
 <span id="cb297-2"><a href="xenium-1.html#cb297-2" tabindex="-1"></a>  <span class="at">extent =</span> <span class="fu">ext</span>(g,</span>
@@ -1371,7 +1475,8 @@ Figure 10.18: Pseudovisium spot geometries generated by <code>makePseudoVisium()
 </div>
 <div id="pseudovisium-aggregation-and-workflow" class="section level3 hasAnchor" number="10.10.1">
 <h3><span class="header-section-number">10.10.1</span> Pseudovisium aggregation and workflow<a href="xenium-1.html#pseudovisium-aggregation-and-workflow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Make “pseudo_visium” the new default spatial unit then proceed with aggregation and usual aggregate workflow.</p>
+<p>Make “pseudo_visium” the new default spatial unit then proceed with
+aggregation and usual aggregate workflow.</p>
 <div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="xenium-1.html#cb298-1" tabindex="-1"></a><span class="fu">activeSpatUnit</span>(g) <span class="ot">&lt;-</span> <span class="st">&quot;pseudo_visium&quot;</span></span>
 <span id="cb298-2"><a href="xenium-1.html#cb298-2" tabindex="-1"></a></span>
 <span id="cb298-3"><a href="xenium-1.html#cb298-3" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">calculateOverlap</span>(g,</span>
